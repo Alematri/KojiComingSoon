@@ -27,8 +27,8 @@
                         heading: ['Red Hat Display', 'sans-serif'],
                     },
                     boxShadow: {
-                        'soft-dark': '0 10px 30px rgba(0, 0, 0, 0.5)',
-                        'purple-glow': '0 10px 30px rgba(74, 47, 148, 0.3)',
+                        'soft-dark': '0 20px 50px rgba(0, 0, 0, 0.8)',
+                        'purple-glow': '0 10px 30px rgba(74, 47, 148, 0.4)',
                     }
                 }
             }
@@ -36,7 +36,6 @@
     </script>
 
     <style>
-        /* Animazione Scala Fluida */
         .hover-scale {
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -44,27 +43,83 @@
             transform: scale(1.05);
         }
         
-        /* Vincolo: Niente bordi globalmente */
         * { border-width: 0 !important; }
 
-        /* Trama di sfondo leggera */
+        /* Sfondo con texture viola visibile */
         body {
             background-color: #000000;
-            /* Un gradiente radiale molto sottile che parte dal viola al centro e sfuma nel nero */
-            background-image: radial-gradient(circle at center, rgba(74, 47, 148, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
-            background-attachment: fixed; /* Mantiene la trama fissa durante lo scroll */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(74, 47, 148, 0.28) 0%, rgba(0, 0, 0, 0) 55%),
+                radial-gradient(circle at 90% 10%, rgba(74, 47, 148, 0.15) 0%, rgba(0, 0, 0, 0) 40%);
+            background-attachment: fixed;
+            overflow-x: hidden; /* Previene scroll orizzontale indesiderato per le particelle */
+        }
+
+        .countdown-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 85px;
+        }
+
+        /* --- STILI PARTICELLE --- */
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Permette di cliccare attraverso le particelle */
+            z-index: 1; /* Dietro la card principale (che ha z-index default più alto essendo dopo nel DOM o per natura flex) */
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #4a2f94; /* Koji Purple */
+            box-shadow: 0 0 6px 1px rgba(74, 47, 148, 0.8); /* Glow luminoso */
+            top: -5%;
+            opacity: 0;
+            animation-name: fall-flutter;
+            animation-timing-function: linear;
+        }
+
+        /* Animazione di caduta con leggero ondeggiamento laterale */
+        @keyframes fall-flutter {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            25% {
+                transform: translateY(25vh) translateX(10px);
+            }
+            50% {
+                transform: translateY(50vh) translateX(-10px);
+                opacity: 0.6;
+            }
+            75% {
+                transform: translateY(75vh) translateX(10px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110vh) translateX(0);
+            }
         }
     </style>
 </head>
-<body class="text-white min-h-screen flex items-center justify-center p-6">
+<body class="text-white min-h-screen flex items-center justify-center p-6 relative z-10">
 
-    <div class="max-w-2xl w-full text-center space-y-12">
+    <div class="max-w-2xl w-full text-center space-y-12 relative z-20">
         
         <header class="flex justify-center">
-            <img src="logo-koji-bianco.png" alt="Koji Logo - Bianco" class="h-24 md:h-48 w-auto object-contain">
+            <img src="logo-koji-bianco.png" alt="Koji Logo" class="h-28 md:h-48 w-auto object-contain">
         </header>
 
-        <main class="bg-white/5 rounded-card shadow-soft-dark p-6 md:p-12 space-y-8 backdrop-blur-md border-t border-white/10">
+        <main class="bg-white/5 rounded-card shadow-soft-dark p-6 md:p-12 space-y-8 backdrop-blur-xl border-t border-white/10">
             <div class="space-y-4">
                 <h1 class="font-heading text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
                     In Arrivo
@@ -75,29 +130,29 @@
             </div>
 
             <div class="grid grid-cols-4 gap-2 md:gap-4">
-                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
-                    <span id="days" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
-                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">GG</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow countdown-box">
+                    <span id="days" class="font-heading text-3xl md:text-5xl block text-white leading-none">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-white/70 mt-1">gg</span>
                 </div>
-                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
-                    <span id="hours" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
-                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">h</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow countdown-box">
+                    <span id="hours" class="font-heading text-3xl md:text-5xl block text-white leading-none">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-white/70 mt-1">h</span>
                 </div>
-                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
-                    <span id="minutes" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
-                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">m</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow countdown-box">
+                    <span id="minutes" class="font-heading text-3xl md:text-5xl block text-white leading-none">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-white/70 mt-1">mm</span>
                 </div>
-                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
-                    <span id="seconds" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
-                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">s</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow countdown-box">
+                    <span id="seconds" class="font-heading text-3xl md:text-5xl block text-white leading-none">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-white/70 mt-1">s</span>
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto pt-6">
+            <div class="max-w-md mx-auto pt-4">
                 <form id="leadForm" class="flex flex-col gap-3">
                     <input type="email" id="email" required
-                           placeholder="La tua email migliore" 
-                           class="w-full px-6 py-4 rounded-cta bg-white/10 focus:outline-none focus:ring-2 focus:ring-kojiPurple/80 text-white placeholder-gray-500 font-sans transition-all text-center md:text-left">
+                           placeholder="La tua email" 
+                           class="w-full px-6 py-4 rounded-cta bg-white/10 focus:outline-none focus:ring-2 focus:ring-kojiPurple text-white placeholder-gray-500 font-sans text-center">
                     
                     <button type="submit" 
                             class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-purple-glow tracking-wide">
@@ -105,28 +160,35 @@
                     </button>
                 </form>
                 <div id="successMsg" class="hidden">
-                    <p class="text-kojiPurple font-bold font-sans animate-pulse mt-6 bg-white/10 py-4 rounded-card">
-                        Grazie! Ti abbiamo inserito in lista.
+                    <p class="text-kojiPurple font-bold font-sans animate-pulse mt-6 bg-white/5 py-4 rounded-card">
+                        Ti abbiamo inserito in lista!
                     </p>
                 </div>
             </div>
         </main>
 
-        <footer class="pt-2 opacity-60 hover:opacity-100 transition-opacity">
-            <p class="font-sans text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
+        <footer class="pt-4 opacity-40">
+            <p class="font-sans text-[10px] uppercase tracking-widest">
                 &copy; Koji Manga — Marchio Registrato
             </p>
         </footer>
     </div>
 
     <script>
-        // --- LOGICA COUNTDOWN (Invariata) ---
-        const targetDate = new Date("2026-06-01T00:00:00").getTime();
+        // DATA TARGET: 15 MARZO 2026
+        const targetDate = new Date("2026-03-15T00:00:00").getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = targetDate - now;
-            if (diff < 0) return;
+            
+            if (diff < 0) {
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
 
             document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
             document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
@@ -136,7 +198,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- INVIO FORM (Invariato) ---
         const form = document.getElementById('leadForm');
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -152,6 +213,42 @@
                 document.getElementById('successMsg').classList.remove('hidden');
             });
         });
+
+        // --- LOGICA PARTICELLE ---
+        function initParticles() {
+            const container = document.createElement('div');
+            container.id = 'particles-container';
+            document.body.prepend(container);
+
+            function createParticle() {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+
+                // Randomizzazione: dimensione (piccoli), posizione orizzontale, durata (lenta)
+                const size = Math.random() * 3 + 2; // 2px a 5px
+                const startLeft = Math.random() * 100; // 0% a 100% vw
+                const duration = Math.random() * 8 + 8; // 8s a 16s (molto lento)
+                
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${startLeft}vw`;
+                p.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(p);
+
+                // Pulizia del DOM alla fine dell'animazione
+                setTimeout(() => { p.remove(); }, duration * 1000);
+            }
+
+            // Generazione "di rado" (ogni 800ms)
+            setInterval(createParticle, 800);
+            
+            // Ne creo subito un paio per non aspettare l'intervallo iniziale
+            createParticle(); setTimeout(createParticle, 400);
+        }
+        
+        // Avvia le particelle al caricamento della pagina
+        window.addEventListener('load', initParticles);
     </script>
 </body>
 </html>
