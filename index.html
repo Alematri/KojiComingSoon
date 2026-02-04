@@ -45,14 +45,13 @@
         
         * { border-width: 0 !important; }
 
-        /* Sfondo con texture viola visibile */
         body {
             background-color: #000000;
             background-image: 
                 radial-gradient(circle at 50% 50%, rgba(74, 47, 148, 0.28) 0%, rgba(0, 0, 0, 0) 55%),
                 radial-gradient(circle at 90% 10%, rgba(74, 47, 148, 0.15) 0%, rgba(0, 0, 0, 0) 40%);
             background-attachment: fixed;
-            overflow-x: hidden; /* Previene scroll orizzontale indesiderato per le particelle */
+            overflow-x: hidden;
         }
 
         .countdown-box {
@@ -63,51 +62,32 @@
             min-height: 85px;
         }
 
-        /* --- STILI PARTICELLE --- */
         #particles-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Permette di cliccare attraverso le particelle */
-            z-index: 1; /* Dietro la card principale (che ha z-index default più alto essendo dopo nel DOM o per natura flex) */
+            pointer-events: none;
+            z-index: 1;
         }
 
         .particle {
             position: absolute;
             border-radius: 50%;
-            background-color: #4a2f94; /* Koji Purple */
-            box-shadow: 0 0 6px 1px rgba(74, 47, 148, 0.8); /* Glow luminoso */
+            background-color: #4a2f94;
+            box-shadow: 0 0 6px 1px rgba(74, 47, 148, 0.8);
             top: -5%;
             opacity: 0;
             animation-name: fall-flutter;
             animation-timing-function: linear;
         }
 
-        /* Animazione di caduta con leggero ondeggiamento laterale */
         @keyframes fall-flutter {
-            0% {
-                opacity: 0;
-                transform: translateY(0) translateX(0);
-            }
-            10% {
-                opacity: 0.8;
-            }
-            25% {
-                transform: translateY(25vh) translateX(10px);
-            }
-            50% {
-                transform: translateY(50vh) translateX(-10px);
-                opacity: 0.6;
-            }
-            75% {
-                transform: translateY(75vh) translateX(10px);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(110vh) translateX(0);
-            }
+            0% { opacity: 0; transform: translateY(0) translateX(0); }
+            10% { opacity: 0.8; }
+            50% { opacity: 0.6; transform: translateY(50vh) translateX(-15px); }
+            100% { opacity: 0; transform: translateY(110vh) translateX(0); }
         }
     </style>
 </head>
@@ -148,21 +128,23 @@
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto pt-4">
-                <form id="leadForm" class="flex flex-col gap-3">
+            <div class="max-w-md mx-auto pt-4 relative min-h-[100px] flex items-center justify-center">
+                <form id="leadForm" class="flex flex-col gap-3 w-full">
                     <input type="email" id="email" required
                            placeholder="La tua email" 
                            class="w-full px-6 py-4 rounded-cta bg-white/10 focus:outline-none focus:ring-2 focus:ring-kojiPurple text-white placeholder-gray-500 font-sans text-center">
                     
-                    <button type="submit" 
+                    <button type="submit" id="submitBtn"
                             class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-purple-glow tracking-wide">
                         AVVISAMI AL LANCIO
                     </button>
                 </form>
-                <div id="successMsg" class="hidden">
-                    <p class="text-kojiPurple font-bold font-sans animate-pulse mt-6 bg-white/5 py-4 rounded-card">
-                        Ti abbiamo inserito in lista!
-                    </p>
+
+                <div id="successMsg" class="hidden w-full">
+                    <div class="bg-kojiPurple text-white p-6 rounded-cta shadow-purple-glow animate-pulse">
+                        <p class="font-heading font-bold text-lg uppercase tracking-tight">Grazie!</p>
+                        <p class="font-sans text-sm opacity-90">Ti avviseremo non appena saremo operativi.</p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -181,14 +163,7 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = targetDate - now;
-            
-            if (diff < 0) {
-                document.getElementById("days").innerText = "00";
-                document.getElementById("hours").innerText = "00";
-                document.getElementById("minutes").innerText = "00";
-                document.getElementById("seconds").innerText = "00";
-                return;
-            }
+            if (diff < 0) return;
 
             document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
             document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
@@ -198,23 +173,28 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // INVIO FORM OTTIMIZZATO (Visualizzazione istantanea)
         const form = document.getElementById('leadForm');
+        const successMsg = document.getElementById('successMsg');
+
         form.addEventListener('submit', e => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzpCLTjfF9d98QSvz9cz8ihj44SGeW3aGsFrYEevhcKXbdpnf_RAxkU3O8yosM5oQf-Rw/exec';
 
+            // 1. Mostriamo subito il successo (UI Ottimista)
+            form.classList.add('hidden');
+            successMsg.classList.remove('hidden');
+
+            // 2. Inviamo i dati in background senza far aspettare l'utente
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: new URLSearchParams({ 'email': email })
-            }).then(() => {
-                form.classList.add('hidden');
-                document.getElementById('successMsg').classList.remove('hidden');
-            });
+            }).catch(err => console.error("Errore invio (background):", err));
         });
 
-        // --- LOGICA PARTICELLE ---
+        // LOGICA PARTICELLE
         function initParticles() {
             const container = document.createElement('div');
             container.id = 'particles-container';
@@ -223,31 +203,18 @@
             function createParticle() {
                 const p = document.createElement('div');
                 p.classList.add('particle');
-
-                // Randomizzazione: dimensione (piccoli), posizione orizzontale, durata (lenta)
-                const size = Math.random() * 3 + 2; // 2px a 5px
-                const startLeft = Math.random() * 100; // 0% a 100% vw
-                const duration = Math.random() * 8 + 8; // 8s a 16s (molto lento)
-                
+                const size = Math.random() * 3 + 2;
+                const startLeft = Math.random() * 100;
+                const duration = Math.random() * 8 + 8;
                 p.style.width = `${size}px`;
                 p.style.height = `${size}px`;
                 p.style.left = `${startLeft}vw`;
                 p.style.animationDuration = `${duration}s`;
-                
                 container.appendChild(p);
-
-                // Pulizia del DOM alla fine dell'animazione
                 setTimeout(() => { p.remove(); }, duration * 1000);
             }
-
-            // Generazione "di rado" (ogni 800ms)
             setInterval(createParticle, 800);
-            
-            // Ne creo subito un paio per non aspettare l'intervallo iniziale
-            createParticle(); setTimeout(createParticle, 400);
         }
-        
-        // Avvia le particelle al caricamento della pagina
         window.addEventListener('load', initParticles);
     </script>
 </body>
