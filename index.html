@@ -16,7 +16,6 @@
                 extend: {
                     colors: {
                         kojiPurple: '#4a2f94',
-                        // Aggiungo un nero "assoluto" per lo sfondo
                         kojiBlack: '#000000',
                     },
                     borderRadius: {
@@ -27,9 +26,9 @@
                         sans: ['Inter', 'sans-serif'],
                         heading: ['Red Hat Display', 'sans-serif'],
                     },
-                    // Ombra modificata per essere più sottile su fondo scuro
                     boxShadow: {
                         'soft-dark': '0 10px 30px rgba(0, 0, 0, 0.5)',
+                        'purple-glow': '0 10px 30px rgba(74, 47, 148, 0.3)',
                     }
                 }
             }
@@ -47,66 +46,74 @@
         
         /* Vincolo: Niente bordi globalmente */
         * { border-width: 0 !important; }
+
+        /* Trama di sfondo leggera */
+        body {
+            background-color: #000000;
+            /* Un gradiente radiale molto sottile che parte dal viola al centro e sfuma nel nero */
+            background-image: radial-gradient(circle at center, rgba(74, 47, 148, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
+            background-attachment: fixed; /* Mantiene la trama fissa durante lo scroll */
+        }
     </style>
 </head>
-<body class="bg-kojiBlack text-white min-h-screen flex items-center justify-center p-6">
+<body class="text-white min-h-screen flex items-center justify-center p-6">
 
-    <div class="max-w-2xl w-full text-center space-y-10">
+    <div class="max-w-2xl w-full text-center space-y-12">
         
         <header class="flex justify-center">
-            <img src="logo-koji-bianco.png" alt="Koji Logo - Bianco" class="h-20 md:h-28 w-auto">
+            <img src="logo-koji-bianco.png" alt="Koji Logo - Bianco" class="h-24 md:h-48 w-auto object-contain">
         </header>
 
-        <main class="bg-white/5 rounded-card shadow-soft-dark p-8 md:p-12 space-y-8 backdrop-blur-sm">
+        <main class="bg-white/5 rounded-card shadow-soft-dark p-6 md:p-12 space-y-8 backdrop-blur-md border-t border-white/10">
             <div class="space-y-4">
-                <h1 class="font-heading text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
+                <h1 class="font-heading text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
                     In Arrivo
                 </h1>
-                <p class="font-sans text-gray-300 text-lg">
+                <p class="font-sans text-gray-300 text-base md:text-lg">
                     Stiamo lavorando a qualcosa di incredibile. <br class="hidden md:block"> Lascia la tua mail per non perdere il lancio.
                 </p>
             </div>
 
             <div class="grid grid-cols-4 gap-2 md:gap-4">
-                <div class="bg-white/10 rounded-card p-3 md:p-4">
-                    <span id="days" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
-                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Giorni</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
+                    <span id="days" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
+                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">GG</span>
                 </div>
-                <div class="bg-white/10 rounded-card p-3 md:p-4">
-                    <span id="hours" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
-                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Ore</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
+                    <span id="hours" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
+                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">h</span>
                 </div>
-                <div class="bg-white/10 rounded-card p-3 md:p-4">
-                    <span id="minutes" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
-                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Minuti</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
+                    <span id="minutes" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
+                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">m</span>
                 </div>
-                <div class="bg-white/10 rounded-card p-3 md:p-4">
-                    <span id="seconds" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
-                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Secondi</span>
+                <div class="bg-kojiPurple rounded-card p-2 md:p-4 shadow-purple-glow flex flex-col justify-center items-center">
+                    <span id="seconds" class="font-heading text-3xl md:text-5xl block text-white leading-none mb-1">00</span>
+                    <span class="font-sans text-[8px] md:text-[10px] uppercase tracking-widest text-white/80 leading-tight">s</span>
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto pt-4">
+            <div class="max-w-md mx-auto pt-6">
                 <form id="leadForm" class="flex flex-col gap-3">
                     <input type="email" id="email" required
                            placeholder="La tua email migliore" 
-                           class="w-full px-6 py-4 rounded-cta bg-white/10 focus:outline-none focus:ring-2 focus:ring-kojiPurple/50 text-white placeholder-gray-500 font-sans transition-all">
+                           class="w-full px-6 py-4 rounded-cta bg-white/10 focus:outline-none focus:ring-2 focus:ring-kojiPurple/80 text-white placeholder-gray-500 font-sans transition-all text-center md:text-left">
                     
                     <button type="submit" 
-                            class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-soft-dark tracking-wide">
+                            class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-purple-glow tracking-wide">
                         AVVISAMI AL LANCIO
                     </button>
                 </form>
                 <div id="successMsg" class="hidden">
-                    <p class="text-kojiPurple font-bold font-sans animate-pulse mt-4">
+                    <p class="text-kojiPurple font-bold font-sans animate-pulse mt-6 bg-white/10 py-4 rounded-card">
                         Grazie! Ti abbiamo inserito in lista.
                     </p>
                 </div>
             </div>
         </main>
 
-        <footer class="pt-4">
-            <p class="font-sans text-xs text-gray-500 uppercase tracking-widest">
+        <footer class="pt-2 opacity-60 hover:opacity-100 transition-opacity">
+            <p class="font-sans text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
                 &copy; Koji Manga — Marchio Registrato
             </p>
         </footer>
