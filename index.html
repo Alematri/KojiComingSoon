@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | Koji Manga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .bg-overlay {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white bg-overlay min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-3xl w-full text-center space-y-8 bg-black/30 p-8 md:p-16 rounded-3xl backdrop-blur-sm border border-white/10">
+        
+        <header>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-2">KOJI MANGA</h1>
+            <p class="text-lg md:text-xl text-gray-300 font-light">Stiamo lavorando a qualcosa di incredibile. Rimani aggiornato.</p>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
+            <div class="bg-white/10 rounded-2xl p-4">
+                <span id="days" class="text-4xl md:text-5xl font-bold block">00</span>
+                <span class="text-xs uppercase tracking-widest text-gray-400">Giorni</span>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4">
+                <span id="hours" class="text-4xl md:text-5xl font-bold block">00</span>
+                <span class="text-xs uppercase tracking-widest text-gray-400">Ore</span>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4">
+                <span id="minutes" class="text-4xl md:text-5xl font-bold block">00</span>
+                <span class="text-xs uppercase tracking-widest text-gray-400">Minuti</span>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4">
+                <span id="seconds" class="text-4xl md:text-5xl font-bold block">00</span>
+                <span class="text-xs uppercase tracking-widest text-gray-400">Secondi</span>
+            </div>
+        </div>
+
+        <div class="max-w-md mx-auto">
+            <form id="leadForm" class="flex flex-col sm:flex-row gap-2">
+                <input type="email" id="email" required
+                       placeholder="Inserisci la tua email..." 
+                       class="w-full px-6 py-4 rounded-full bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400">
+                <button type="submit" 
+                        class="px-8 py-4 rounded-full bg-blue-600 hover:bg-blue-700 font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg">
+                    ISCRIVITI
+                </button>
+            </form>
+            <p id="successMsg" class="mt-4 text-green-400 font-medium hidden">Ottimo! Ti abbiamo aggiunto alla lista.</p>
+        </div>
+
+        <footer class="pt-8 border-t border-white/10">
+            <p class="text-sm text-gray-400">&copy; Koji Manga, marchio registrato</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- LOGICA COUNTDOWN ---
+        const targetDate = new Date("2026-06-01T00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff < 0) return;
+
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- INVIO FORM A GOOGLE SHEETS ---
+        const form = document.getElementById('leadForm');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            // Inserisci qui l'URL della tua Web App di Google Apps Script
+            const SCRIPT_URL = 'IL_TUO_URL_DI_GOOGLE_APPS_SCRIPT';
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: new URLSearchParams({ 'email': email })
+            }).then(() => {
+                form.style.display = 'none';
+                document.getElementById('successMsg').classList.remove('hidden');
+            }).catch(err => console.error('Errore!', err));
+        });
+    </script>
+</body>
+</html>
