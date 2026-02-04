@@ -4,61 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coming Soon | Koji Manga</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Red_Hat_Display:wght@700;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kojiPurple: '#4a2f94',
+                    },
+                    borderRadius: {
+                        'cta': '22px',
+                        'card': '16px',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Red Hat Display', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        .bg-overlay {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
+        /* Animazione Scala Fluida */
+        .hover-scale {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-scale:hover, .hover-scale:active {
+            transform: scale(1.05);
+        }
+        
+        /* Vincolo: Niente bordi */
+        * { border-width: 0 !important; }
+        
+        body {
+            background-color: #FFFFFF;
+            color: #000000;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white bg-overlay min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="max-w-3xl w-full text-center space-y-8 bg-black/30 p-8 md:p-16 rounded-3xl backdrop-blur-sm border border-white/10">
+    <div class="max-w-2xl w-full text-center space-y-10">
         
-        <header>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-2">KOJI MANGA</h1>
-            <p class="text-lg md:text-xl text-gray-300 font-light">Stiamo lavorando a qualcosa di incredibile. Rimani aggiornato.</p>
+        <header class="flex justify-center">
+            <img src="logo-koji-nero.png" alt="Koji Logo" class="h-20 md:h-28 w-auto">
         </header>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
-            <div class="bg-white/10 rounded-2xl p-4">
-                <span id="days" class="text-4xl md:text-5xl font-bold block">00</span>
-                <span class="text-xs uppercase tracking-widest text-gray-400">Giorni</span>
+        <main class="bg-white rounded-card shadow-soft p-8 md:p-12 space-y-8">
+            <div class="space-y-4">
+                <h1 class="font-heading text-4xl md:text-5xl font-black uppercase tracking-tight text-black">
+                    In Arrivo
+                </h1>
+                <p class="font-sans text-gray-600 text-lg">
+                    Stiamo lavorando a qualcosa di incredibile. <br class="hidden md:block"> Lascia la tua mail per non perdere il lancio.
+                </p>
             </div>
-            <div class="bg-white/10 rounded-2xl p-4">
-                <span id="hours" class="text-4xl md:text-5xl font-bold block">00</span>
-                <span class="text-xs uppercase tracking-widest text-gray-400">Ore</span>
-            </div>
-            <div class="bg-white/10 rounded-2xl p-4">
-                <span id="minutes" class="text-4xl md:text-5xl font-bold block">00</span>
-                <span class="text-xs uppercase tracking-widest text-gray-400">Minuti</span>
-            </div>
-            <div class="bg-white/10 rounded-2xl p-4">
-                <span id="seconds" class="text-4xl md:text-5xl font-bold block">00</span>
-                <span class="text-xs uppercase tracking-widest text-gray-400">Secondi</span>
-            </div>
-        </div>
 
-        <div class="max-w-md mx-auto">
-            <form id="leadForm" class="flex flex-col sm:flex-row gap-2">
-                <input type="email" id="email" required
-                       placeholder="Inserisci la tua email..." 
-                       class="w-full px-6 py-4 rounded-full bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400">
-                <button type="submit" 
-                        class="px-8 py-4 rounded-full bg-blue-600 hover:bg-blue-700 font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg">
-                    ISCRIVITI
-                </button>
-            </form>
-            <p id="successMsg" class="mt-4 text-green-400 font-medium hidden">Ottimo! Ti abbiamo aggiunto alla lista.</p>
-        </div>
+            <div class="grid grid-cols-4 gap-2 md:gap-4">
+                <div class="bg-gray-50 rounded-card p-3 md:p-4">
+                    <span id="days" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Giorni</span>
+                </div>
+                <div class="bg-gray-50 rounded-card p-3 md:p-4">
+                    <span id="hours" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Ore</span>
+                </div>
+                <div class="bg-gray-50 rounded-card p-3 md:p-4">
+                    <span id="minutes" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Minuti</span>
+                </div>
+                <div class="bg-gray-50 rounded-card p-3 md:p-4">
+                    <span id="seconds" class="font-heading text-2xl md:text-4xl block text-kojiPurple">00</span>
+                    <span class="font-sans text-[10px] uppercase tracking-widest text-gray-400">Secondi</span>
+                </div>
+            </div>
 
-        <footer class="pt-8 border-t border-white/10">
-            <p class="text-sm text-gray-400">&copy; Koji Manga, marchio registrato</p>
+            <div class="max-w-md mx-auto pt-4">
+                <form id="leadForm" class="flex flex-col gap-3">
+                    <input type="email" id="email" required
+                           placeholder="La tua email migliore" 
+                           class="w-full px-6 py-4 rounded-cta bg-gray-100 focus:outline-none focus:ring-2 focus:ring-kojiPurple/20 text-black placeholder-gray-400 font-sans">
+                    
+                    <button type="submit" 
+                            class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-soft tracking-wide">
+                        AVVISAMI AL LANCIO
+                    </button>
+                </form>
+                <div id="successMsg" class="hidden">
+                    <p class="text-kojiPurple font-bold font-sans animate-pulse">
+                        Grazie! Ti abbiamo inserito in lista.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="pt-4">
+            <p class="font-sans text-xs text-gray-400 uppercase tracking-widest">
+                &copy; Koji Manga — Marchio Registrato
+            </p>
         </footer>
     </div>
 
@@ -69,7 +121,6 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = targetDate - now;
-
             if (diff < 0) return;
 
             document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
@@ -80,13 +131,11 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- INVIO FORM A GOOGLE SHEETS ---
+        // --- INVIO FORM ---
         const form = document.getElementById('leadForm');
         form.addEventListener('submit', e => {
             e.preventDefault();
             const email = document.getElementById('email').value;
-            
-            // Inserisci qui l'URL della tua Web App di Google Apps Script
             const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzpCLTjfF9d98QSvz9cz8ihj44SGeW3aGsFrYEevhcKXbdpnf_RAxkU3O8yosM5oQf-Rw/exec';
 
             fetch(SCRIPT_URL, {
@@ -94,9 +143,9 @@
                 mode: 'no-cors',
                 body: new URLSearchParams({ 'email': email })
             }).then(() => {
-                form.style.display = 'none';
+                form.classList.add('hidden');
                 document.getElementById('successMsg').classList.remove('hidden');
-            }).catch(err => console.error('Errore!', err));
+            });
         });
     </script>
 </body>
