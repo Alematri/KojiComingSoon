@@ -50,6 +50,18 @@
             overflow-x: hidden;
         }
 
+        /* Scrollbar Personalizzata Pop-up */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #4a2f94;
+            border-radius: 10px;
+        }
+
         /* Animazioni */
         .hover-scale { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .hover-scale:hover, .hover-scale:active { transform: scale(1.05); }
@@ -104,10 +116,8 @@
 
         <main class="bg-white/5 rounded-card shadow-soft-dark p-6 md:p-12 space-y-8 backdrop-blur-xl border-t border-white/10">
             <div class="space-y-4">
-                <h1 class="font-heading text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
-                    In Arrivo
-                </h1>
-                <p class="font-sans text-gray-300 text-base md:text-lg leading-relaxed">
+                <h1 class="font-heading text-3xl md:text-5xl font-black uppercase tracking-tight text-white">In Arrivo</h1>
+                <p class="font-sans text-gray-300 text-base md:text-lg">
                     Stiamo lavorando a qualcosa di incredibile. <br class="hidden md:block"> Lascia la tua mail per non perdere il lancio.
                 </p>
             </div>
@@ -131,21 +141,19 @@
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto pt-4 relative min-h-[140px] flex items-center justify-center">
+            <div class="max-w-md mx-auto pt-4 relative min-h-[140px]">
                 <form id="leadForm" class="flex flex-col gap-3 w-full" novalidate>
-                    <input type="email" id="email" required
-                           placeholder="La tua email" 
+                    <input type="email" id="email" required placeholder="La tua email" 
                            class="w-full px-6 py-4 rounded-cta bg-white/10 focus:ring-2 focus:ring-kojiPurple text-white placeholder-gray-500 font-sans text-center transition-all">
                     
-                    <div id="privacy-container" class="flex items-center justify-center gap-2 py-1 transition-colors">
+                    <div id="privacy-container" class="flex items-center justify-center gap-2 py-1">
                         <input type="checkbox" id="privacy" class="w-4 h-4 rounded bg-white/10 text-kojiPurple focus:ring-kojiPurple cursor-pointer">
                         <label for="privacy" class="text-[10px] md:text-xs text-gray-400 font-sans cursor-pointer">
-                            Accetto il <a href="#" class="text-gray-400 underline hover:text-white">trattamento dei dati</a> per scopi commerciali
+                            Accetto il <button type="button" id="openPrivacy" class="text-kojiPurple underline hover:text-white">trattamento dei dati</button>
                         </label>
                     </div>
 
-                    <button type="submit" id="submitBtn"
-                            class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-purple-glow tracking-wide">
+                    <button type="submit" id="submitBtn" class="hover-scale w-full px-8 py-4 rounded-cta bg-kojiPurple text-white font-heading font-bold shadow-purple-glow tracking-wide">
                         AVVISAMI AL LANCIO
                     </button>
                 </form>
@@ -159,15 +167,73 @@
             </div>
         </main>
 
-        <footer class="pt-4 opacity-40">
-            <p class="font-sans text-[10px] uppercase tracking-widest">
-                &copy; Koji Manga — Marchio Registrato
-            </p>
+        <footer class="pt-4 opacity-40 text-[10px] uppercase tracking-widest">
+            &copy; Koji Manga — Marchio Registrato
         </footer>
     </div>
 
+    <div id="privacyModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+        <div class="bg-[#1a1a1a] w-full max-w-2xl max-h-[85vh] rounded-card shadow-2xl flex flex-col overflow-hidden border border-white/10">
+            
+            <div class="p-6 border-b border-white/5">
+                <h2 class="font-heading text-2xl font-black text-white uppercase tracking-tight">Privacy & Termini</h2>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-4 custom-scroll font-sans text-sm text-gray-300 leading-relaxed text-left">
+                <p class="font-bold text-white">Informativa sul trattamento dei dati personali (GDPR)</p>
+                <p>Benvenuto su Koji Manga. La tua privacy è fondamentale per noi. Iscrivendoti alla nostra newsletter, acconsenti al trattamento della tua email esclusivamente per finalità legate al lancio del progetto e aggiornamenti futuri.</p>
+                
+                <h3 class="text-white font-bold mt-4">1. Titolare del Trattamento</h3>
+                <p>I dati raccolti sono gestiti dal team di Koji Manga. I dati non vengono ceduti a terze parti né venduti a società di marketing esterne.</p>
+
+                <h3 class="text-white font-bold mt-4">2. Finalità e Frequenza</h3>
+                <p>Utilizzeremo la tua email per inviarti una notifica al momento del lancio ufficiale e, successivamente, newsletter periodiche (massimo una volta a settimana) con contenuti esclusivi, news sui manga e promozioni.</p>
+
+                <h3 class="text-white font-bold mt-4">3. Conservazione e Sicurezza</h3>
+                <p>Le email sono conservate in modo sicuro tramite infrastruttura cloud crittografata. Il trattamento avviene nel pieno rispetto del Regolamento UE 2016/679 (GDPR).</p>
+
+                <h3 class="text-white font-bold mt-4">4. I tuoi diritti</h3>
+                <p>In qualsiasi momento potrai richiedere la cancellazione definitiva dei tuoi dati o la modifica degli stessi contattandoci tramite i canali ufficiali o cliccando il link "Unsubscribe" presente in ogni nostra comunicazione.</p>
+                
+                <p class="pt-4 italic text-gray-500 text-xs">Nota per i copywriter: Questo testo è una bozza tecnica. Revisionare terminologia legale prima del lancio definitivo.</p>
+            </div>
+
+            <div class="p-6 border-t border-white/5 flex flex-col sm:flex-row justify-end gap-3 bg-[#141414]">
+                <button id="declinePrivacy" class="hover-scale px-8 py-3 rounded-cta bg-white text-kojiPurple font-bold text-sm">
+                    RIFIUTA
+                </button>
+                <button id="acceptPrivacy" class="hover-scale px-8 py-3 rounded-cta bg-kojiPurple text-white font-bold text-sm shadow-purple-glow">
+                    ACCETTA
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. COUNTDOWN (Target: 15 Marzo 2026) ---
+        // --- LOGICA MODALE ---
+        const modal = document.getElementById('privacyModal');
+        const openBtn = document.getElementById('openPrivacy');
+        const acceptBtn = document.getElementById('acceptPrivacy');
+        const declineBtn = document.getElementById('declinePrivacy');
+        const privacyCheckbox = document.getElementById('privacy');
+
+        openBtn.onclick = () => modal.classList.remove('hidden');
+        
+        acceptBtn.onclick = () => {
+            privacyCheckbox.checked = true;
+            modal.classList.add('hidden');
+        };
+
+        declineBtn.onclick = () => {
+            modal.classList.add('hidden');
+        };
+
+        // Chiudi se clicchi fuori dal pop-up
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.classList.add('hidden');
+        };
+
+        // --- RESTO DELLA LOGICA (Countdown, Particelle, Form) ---
         const targetDate = new Date("2026-03-15T00:00:00").getTime();
         function updateCountdown() {
             const now = new Date().getTime();
@@ -181,7 +247,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- 2. PARTICELLE (Puntini luce viola cadenti) ---
         function initParticles() {
             const container = document.createElement('div');
             container.id = 'particles-container';
@@ -202,17 +267,11 @@
         }
         window.addEventListener('load', initParticles);
 
-        // --- 3. GESTIONE FORM E VALIDAZIONE ---
         const form = document.getElementById('leadForm');
         const emailInput = document.getElementById('email');
-        const privacyCheck = document.getElementById('privacy');
-        const privacyContainer = document.getElementById('privacy-container');
         const submitBtn = document.getElementById('submitBtn');
-        const successMsg = document.getElementById('successMsg');
         const originalBtnText = submitBtn.innerText;
         let errorTimeout;
-
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         function showError(msg) {
             clearTimeout(errorTimeout);
@@ -228,33 +287,23 @@
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            const emailValue = emailInput.value.trim();
-
-            // Validazione Email
-            if (!emailRegex.test(emailValue)) {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
                 showError("SI PREGA DI INSERIRE UNA MAIL VALIDA");
                 return;
             }
-
-            // Validazione Privacy
-            if (!privacyCheck.checked) {
+            if (!privacyCheckbox.checked) {
                 showError("ACCETTA IL TRATTAMENTO DATI");
-                privacyContainer.classList.add('animate-shake', 'text-kojiRed');
-                setTimeout(() => privacyContainer.classList.remove('animate-shake', 'text-kojiRed'), 2000);
+                document.getElementById('privacy-container').classList.add('animate-shake', 'text-kojiRed');
+                setTimeout(() => document.getElementById('privacy-container').classList.remove('animate-shake', 'text-kojiRed'), 2000);
                 return;
             }
-
-            // UI Ottimista: Successo immediato
             form.classList.add('hidden');
-            successMsg.classList.remove('hidden');
-
-            // Invio Background
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMBo3ETqC4j6MRcSpKV7b4ht5q4nJgtGsn53aH6-iytXjPKC6dIm87dCAbsEel_Db0gg/exec';
-            fetch(SCRIPT_URL, {
+            document.getElementById('successMsg').classList.remove('hidden');
+            fetch('https://script.google.com/macros/s/AKfycbxMBo3ETqC4j6MRcSpKV7b4ht5q4nJgtGsn53aH6-iytXjPKC6dIm87dCAbsEel_Db0gg/exec', {
                 method: 'POST',
                 mode: 'no-cors',
-                body: new URLSearchParams({ 'email': emailValue })
-            }).catch(err => console.error("Sync Error:", err));
+                body: new URLSearchParams({ 'email': emailInput.value.trim() })
+            });
         });
     </script>
 </body>
